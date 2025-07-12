@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  serverai-engine:
+    build: .
+    container_name: serverai-knowledge-engine
+    ports:
+      - "420420:420420"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+    networks:
+      - serverai-network
+
+networks:
+  serverai-network:
+    driver: bridge
+
+# Optional: Add volume for persistent data if needed in future
+# volumes:
+#   serverai-data:
+#     driver: local
