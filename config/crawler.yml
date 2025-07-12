@@ -1,0 +1,94 @@
+# Default crawl configuration
+crawl_targets:
+  - "https://www.digitalocean.com/community/tutorials"
+  - "https://linuxize.com"
+  - "https://www.tecmint.com"
+  - "https://www.howtoforge.com"
+  - "https://www.cyberciti.biz"
+  - "https://wiki.archlinux.org"
+  - "https://ubuntu.com/server/docs"
+
+# Topic classification keywords
+topic_mapping:
+  linux:
+    - "linux"
+    - "ubuntu"
+    - "centos" 
+    - "debian"
+    - "rhel"
+    - "bash"
+    - "shell"
+    - "systemd"
+  
+  networking:
+    - "network"
+    - "tcp"
+    - "ip"
+    - "dns"
+    - "dhcp"
+    - "vpn"
+    - "firewall"
+    - "iptables"
+  
+  mysql:
+    - "mysql"
+    - "mariadb"
+    - "database"
+    - "sql"
+    - "innodb"
+    - "replication"
+  
+  apache:
+    - "apache"
+    - "httpd"
+    - "mod_rewrite"
+    - "virtual host"
+    - "htaccess"
+  
+  security:
+    - "security"
+    - "ssl"
+    - "tls"
+    - "encryption"
+    - "vulnerability"
+    - "hardening"
+  
+  dns:
+    - "dns"
+    - "bind"
+    - "nameserver"
+    - "domain"
+    - "zone"
+  
+  vmware:
+    - "vmware"
+    - "esxi"
+    - "vcenter"
+    - "virtualization"
+    - "hypervisor"
+  
+  cloud:
+    - "aws"
+    - "azure"
+    - "gcp"
+    - "cloud"
+    - "ec2"
+    - "s3"
+  
+  email:
+    - "email"
+    - "postfix"
+    - "exim"
+    - "dovecot"
+    - "smtp"
+    - "mail"
+
+# Crawler settings
+crawler_settings:
+  max_pages_per_site: 50
+  delay_between_requests: 2
+  timeout: 30
+  user_agent: "ServerAI Knowledge Engine Bot 1.0"
+  respect_robots_txt: true
+  max_content_length: 1000000  # 1MB
+  min_content_length: 500      # 500 chars
