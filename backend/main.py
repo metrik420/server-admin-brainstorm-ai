@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi import FastAPI, HTTPException, BackgroundTasks, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import asyncio
@@ -10,6 +10,7 @@ import json
 from crawler import WebCrawler
 from database import Database
 from models import CrawlTask, CrawlStatus, TopicStats
+from logging_utils import log_manager
 
 app = FastAPI(title="ServerAI Knowledge Engine API", version="1.0.0")
 
@@ -81,6 +82,28 @@ async def search_articles(q: str):
     """Search articles by query"""
     results = await db.search_articles(q)
     return results
+
+@app.get("/api/logs/recent")
+async def recent_logs(n: int = 100):
+    """Return recent crawl logs (for fallback / initial load)"""
+    n = max(1, min(1000, n))
+    return {"logs": log_manager.recent(n)}
+
+@app.websocket("/api/logs/stream")
+async def logs_stream(ws: WebSocket):
+    await ws.accept()
+    q = await log_manager.subscribe()
+    try:
+        # send a hello event
+        await ws.send_json({"type": "hello", "ts": datetime.utcnow().isoformat() + "Z"})
+        while True:
+            # don't expect incoming data; only push
+            event = await q.get()
+            await ws.send_json(event)
+    except WebSocketDisconnect:
+        pass
+    finally:
+        await log_manager.unsubscribe(q)
 
 if __name__ == "__main__":
     import uvicorn
